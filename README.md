@@ -1,31 +1,89 @@
-EEG Eye State Classification using Deep Learning
-Overview
+**EEG Eye State Classification using Deep Learning**
 
-This project implements temporal deep learning architectures for EEG-based eye state classification using LSTM and CNN-LSTM models.
+**Overview**
 
-Methodology
+This project explores deep learning architectures for classifying eye state (Open vs Closed) using EEG time-series signals.
 
-Sliding window sequence generation (window size = 20)
+The objective was to build a clean temporal modeling pipeline and compare different recurrent architectures for sequence classification.
 
-Stratified 80–20 train-test split
+**Dataset**
 
-StandardScaler fitted only on training data (leakage prevention)
+- 14 EEG signal channels
 
-Reshaping for proper scaling of 3D sequence data
+- Binary classification (0 = Open, 1 = Closed)
 
-Models Implemented
+- Time-ordered signal samples
 
-Single LSTM
+**Methodology**
+Sequence Generation
 
-Stacked LSTM
+- Sliding window approach (window size = 20)
 
-CNN-LSTM
+- Converts raw data into sequences of shape (20, 14)
 
-Results
-Model	Test Accuracy
-Single LSTM	99.43%
-Stacked LSTM	99.80%
-CNN-LSTM	99.26%
-Key Learning
+**Data Splitting**
 
-This project highlights the importance of proper temporal modeling and leakage-free preprocessing in EEG-based classification tasks.
+- 80–20 stratified train-test split
+
+- Maintains class balance
+
+**Feature Scaling**
+
+- StandardScaler fitted only on training data
+
+- Test data transformed using training statistics
+
+- 3D sequence data reshaped for proper scaling (2D → scale → 3D)
+
+**Models Implemented**
+
+- Single LSTM
+
+- Stacked LSTM
+
+- CNN–LSTM Hybrid
+
+All models were implemented using TensorFlow/Keras with early stopping.
+
+**Results**
+
+| Model        | Test Accuracy |
+|--------------|--------------|
+| Single LSTM  | 99.43% |
+| Stacked LSTM | **99.80%** |
+| CNN-LSTM     | 99.26% |
+
+Confusion Matrix (Stacked LSTM)
+
+Training Curve (Stacked LSTM)
+
+
+**Reproducibility**
+
+To load the trained model:
+
+from tensorflow.keras.models import load_model
+import joblib
+
+model = load_model("best_stacked_lstm_model.h5")
+scaler = joblib.load("scaler.pkl")
+
+**Tools Used**
+
+- Python
+
+- TensorFlow / Keras
+
+- NumPy
+
+- Scikit-learn
+
+- Matplotlib
+
+**Key Takeaways**
+
+- Proper temporal modeling significantly improves EEG classification.
+
+- Leakage-aware preprocessing is critical for reliable evaluation.
+
+- Stacked LSTM achieved the best performance due to hierarchical temporal feature extraction.
